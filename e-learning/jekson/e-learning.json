@@ -1,0 +1,117 @@
+[
+    {
+        "id": 8,
+        "category": "xss",
+        "title": "Reflected-XSS in body request bmkg.go.id | BurpSuite",
+        "image": "../../../imej/instansi/bmkg.jpg",
+        "description": "RXSS auth.bmkg.go.id | #TSecNetwork2025 #TsecnetworkHackerCommunity.",
+        "embed": "https://www.youtube.com/embed/m4Ob67ryYsg?si=RIPjf_jXCIp-zkyU",
+        "date": "28-February-2025",
+        "channel": "https://www.youtube.com/@tsecnetwork4896",
+        "nama": "./SaklarRusak",
+        "profileLink": "../../hunter/profile/?nick=./SaklarRusak",
+        "detailPage": "./A01/?id=8",
+        "link": "./?id=8"
+    },
+    {
+        "id": 2,
+        "category": "sqli",
+        "title": "SQLi Subdomain jdih.**.mil.id | SQLmap",
+        "image": "../../../imej/instansi/tniad.jpg",
+        "description": "🇺🇸 Education Purpose Only | #TsecnetworkHackerCommunity",
+        "embed": "https://www.youtube.com/embed/SyzYL3zfccw?si=n7VVvrwoA3IYrLzy",
+        "date": "02-March-2025",
+        "channel": "https://www.youtube.com/@aneitherguy",
+        "nama": "fitwilliamx12",
+        "profileLink": "../../hunter/profile/?nick=fitwilliamx12",
+        "detailPage": "./A01/?id=2",
+        "link": "./?id=2"
+    },
+    {
+        "id": 3,
+        "category": "rce",
+        "title": "Insecure Deserialization tnial.mil.id | BurpSuite",
+        "image": "../../../imej/instansi/tnial.jpg",
+        "description": "Video di tiadakan. Sedang Proses Pelaporan!",
+        "embed": "",
+        "date": "22-February-2025",
+        "channel": "https://www.youtube.com/@tsecnetwork4896",
+        "nama": "./SaklarRusak",
+        "profileLink": "../../hunter/profile/?nick=./SaklarRusak",
+        "detailPage": "./A01/?id=3",
+        "link": "./?id=3"
+    },
+    {
+        "id": 4,
+        "category": "unknown",
+        "title": "Dos Attack Vulnerability **.polri.go.id",
+        "image": "../../../imej/instansi/polri.jpg",
+        "description": "Kerentanan DoS Attack pada Windows Server 2012 / 2012 R2 | #TSecNetworkHackerCommunity",
+        "embed": "https://www.youtube.com/embed/M25F9LGMTdI?si=LhgQ2E-XK3Zwo77E",
+        "date": "-",
+        "channel": "https://www.youtube.com/@tsecnetwork4896",
+        "nama": "./SaklarRusak",
+        "profileLink": "../../hunter/profile/?nick=./SaklarRusak",
+        "detailPage": "./A01/?id=4",
+        "link": "./?id=4"
+    },
+    {
+        "id": 1,
+        "category": "rce",
+        "title": "JSON Remote kemnaker.go.id",
+        "image": "../../../imej/instansi/kemnaker.jpg",
+        "description": "Video di tiadakan. Sedang Proses Pelaporan!",
+        "embed": "",
+        "date":"27-March-2025",
+        "channel": "https://www.youtube.com/@tsecnetwork4896",
+        "nama": "./SaklarRusak",
+        "profileLink": "../../hunter/profile/?nick=./SaklarRusak",
+        "detailPage": "./A01/?id=1",
+        "link": "./?id=1"
+    },
+    {
+        "id": 6,
+        "category": "sqli",
+        "title": "Tutorial Mencari Celah SQLi Post data **.bengkalis.go.id",
+        "image": "../../../imej/instansi/bengkalis.png",
+        "description": "tutor cari celah sqli post data | TSecNetwork Hacker Community",
+        "embed": "https://www.youtube.com/embed/32CR2xcCqvo?si=fc98bTH_-53vO2Fl",
+        "date":"16-February-2025",
+        "channel": "https://www.youtube.com/@aneitherguy",
+        "nama": "fitwilliamx12",
+        "profileLink": "../../hunter/profile/?nick=fitwilliamx12",
+        "detailPage": "./A01/?id=6",
+        "link": "./?id=6"
+    },
+    {
+        "id": 7,
+        "category": "sqli",
+        "title": "SQLi live target **.asahankab.go.id",
+        "image": "../../../imej/instansi/asahankab.gif",
+        "description": "tutor cari celah sqli post data | TSecNetwork Hacker Community",
+        "embed": "https://www.youtube.com/embed/cYllinNZfkw?si=k5Nrjb17psm41fUn",
+        "date":"5-March-2025",
+        "channel": "https://www.youtube.com/@aneitherguy",
+        "nama": "fitwilliamx12",
+        "profileLink": "../../hunter/profile/?nick=fitwilliamx12",
+        "detailPage": "./A01/?id=7",
+        "link": "./?id=7"
+    },
+    {
+        "id": 5,
+        "category": "sqli",
+        "title": "SQLi to LFI kalasin-pao.go.th",
+        "image": "../../../imej/instansi/thailand.png",
+        "description": "SQLi to LFI - RCE Challanges| TSecNetwork Hacker Community",
+        "embed": "https://www.youtube.com/embed/z_XLeCwBvew?si=KPW2_2HYG_VqI_U8",
+        "date":"8-March-2025",
+        "channel": "https://www.youtube.com/@aneitherguy",
+        "nama": "fitwilliamx12",
+        "profileLink": "../../hunter/profile/?nick=fitwilliamx12",
+        "detailPage": "./A01/?id=5",
+        "link": "./?id=5"
+    }
+
+    
+]
+

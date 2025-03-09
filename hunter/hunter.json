@@ -1,0 +1,138 @@
+[
+    {
+        "id": 1,
+        "nick": "./SaklarRusak",
+        "status": "Aktif",
+        "videoCount": 4,
+        "rank": "Proffesional", 
+        "profileLink": "profile/?nick=./SaklarRusak",
+        "email": "severityhunting1337@protonmail.com",
+        "channel_yt": "https://www.youtube.com/@tsecnetwork4896",
+        "other": "",
+        "join": "2019/2020"
+    },
+    {
+        "id": 2,
+        "nick": "fitwilliamx12",
+        "status": "Aktif",
+        "videoCount": 4,
+        "rank": "Proffesional",
+        "profileLink": "profile/?nick=fitwilliamx12",
+        "email": "fitwilliamx12@",
+        "channel_yt": "https://www.youtube.com/@aneitherguy/videos",
+        "other": "",
+        "join": "2025"
+
+    },
+    {
+        "id": 3,
+        "nick": "Noctivaq",
+        "status": "Aktif",
+        "videoCount": 0,
+        "rank": "Proffesional",
+        "profileLink": "profile/?nick=Noctivaq",
+        "email": "-",
+        "channel_yt": "-",
+        "other": "-",
+        "join": "2025"
+    },
+    
+    {
+        "id": 4,
+        "nick": "K4puyu4k",
+        "status": "Aktif",
+        "videoCount": 0,
+        "rank": "Proffesional",
+        "profileLink": "profile/?nick=K4puyu4k",
+        "email": "k4puyu4k1337@protonmail.com",
+        "channel_yt": "-",
+        "other": "",
+        "join": "2019/2020"
+    },
+    {
+        "id": 5,
+        "nick": "DR4G0N5",
+        "status": "Tidak Aktif",
+        "videoCount": -999999,
+        "rank": "Proffesional",
+        "profileLink": "profile/?nick=DR4G0N5",
+        "email": "-",
+        "channel_yt": "https://www.youtube.com/@dr4gclew552",
+        "other": "",
+        "join": "2019/2020"
+    },
+    {
+        "id": 6,
+        "nick": "halisia",
+        "status": "Tidak Aktif",
+        "videoCount": -999999,
+        "rank": "Proffesional",
+        "profileLink": "profile/?nick=halisia",
+        "email": "-",
+        "channel_yt": "-",
+        "other": "",
+        "join": "2019/2020"
+    },
+    {
+        "id": 7,
+        "nick": "TN.MDK",
+        "status": "Tidak Aktif",
+        "videoCount": -999999,
+        "rank": "Proffesional",
+        "profileLink": "profile/?nick=TN.MDK",
+        "email": "-",
+        "channel_yt": "-",
+        "other": "",
+        "join": "2022"
+    },
+    {
+        "id": 8,
+        "nick": "Wsluser",
+        "status": "Tidak Aktif",
+        "videoCount": -999999,
+        "rank": "Proffesional",
+        "profileLink": "profile/?nick=Wsluser",
+        "email": "-",
+        "channel_yt": "-",
+        "other": "",
+        "join": "2019/2020"
+    },
+    {
+        "id": 9,
+        "nick": "NetSleuth",
+        "status": "Tidak Aktif",
+        "videoCount": -999999,
+        "rank": "Proffesional",
+        "profileLink": "profile/?nick=halisia",
+        "email": "email",
+        "channel_yt": "link yt",
+        "other": "",
+        "join": "2019/2020"
+    },
+    {
+        "id": 10,
+        "nick": "Kamley77",
+        "status": "Tidak Aktif",
+        "videoCount": -999999,
+        "rank": "Proffesional",
+        "profileLink": "profile/?nick=halisia",
+        "email": "email",
+        "channel_yt": "link yt",
+        "other": "",
+        "join": "2021"
+    },
+    {
+        "id": 11,
+        "nick": "irkid",
+        "status": "Aktif",
+        "videoCount": 0,
+        "rank": "Proffesional",
+        "profileLink": "profile/?nick=irkid",
+        "email": "-",
+        "channel_yt": "-",
+        "other": "",
+        "join": "2025"
+    }
+    
+    
+]
