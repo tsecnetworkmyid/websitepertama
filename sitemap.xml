@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Halaman Utama -->
+  <url>
+    <loc>http://tsecnetwork.my.id/</loc>
+    <lastmod>2023-10-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Halaman About -->
+  <url>
+    <loc>http://tsecnetwork.my.id/about</loc>
+    <lastmod>2023-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Halaman eLearning -->
+  <url>
+    <loc>http://tsecnetwork.my.id/elearning</loc>
+    <lastmod>2023-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Halaman News -->
+  <url>
+    <loc>http://tsecnetwork.my.id/news</loc>
+    <lastmod>2023-09-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Halaman Hunter -->
+  <url>
+    <loc>http://tsecnetwork.my.id/hunter</loc>
+    <lastmod>2023-09-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Halaman Contact -->
+  <url>
+    <loc>http://tsecnetwork.my.id/contact</loc>
+    <lastmod>2023-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+</urlset>
