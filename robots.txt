@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://tsecnetwork.my.id/sitemap.xml
