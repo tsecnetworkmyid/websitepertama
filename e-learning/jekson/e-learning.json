@@ -111,5 +111,20 @@
     "profileLink": "../../hunter/profile/?nick=fitwilliamx1337",
     "detailPage": "/e-learning/A01/?id=5",
     "link": "./?id=5"
+  },
+  {
+    "id": 9,
+    "category": "sqli",
+    "title": "SQL Injection Exploitaion PoC",
+    "image": "../../../imej/instansi/ins.jpg",
+    "description": "poc SQLi | #TSecNetwork2025 #TsecnetworkHackerCommunity.",
+    "embed": "https://www.youtube.com/embed/aSpMTmO6rus?si=iNDVFhb2GggrRfCm",
+    "date": "23-March-2025",
+    "channel": "https://www.youtube.com/channel/UCcPE-oGHTgGwaZRDQyUZBsA?source_ve_path=MzY5MjU",
+    "nama": "CyberSel",
+    "profileLink": "/hunter/profile/?nick=CyberSel",
+    "detailPage": "/e-learning/A01/?id=9",
+    "link": "./?id=9",
+    "channel_yt": "https://www.youtube.com/channel/UCcPE-oGHTgGwaZRDQyUZBsA?source_ve_path=MzY5MjU"
   }
 ]
