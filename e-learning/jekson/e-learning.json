@@ -119,12 +119,28 @@
     "image": "../../../imej/instansi/ins.png",
     "description": "poc SQLi | #TSecNetwork2025 #TsecnetworkHackerCommunity.",
     "embed": "https://www.youtube.com/embed/aSpMTmO6rus?si=iNDVFhb2GggrRfCm",
-    "date": "23-March-2025",
+    "date": "13-March-2025",
     "channel": "https://www.youtube.com/channel/UCcPE-oGHTgGwaZRDQyUZBsA?source_ve_path=MzY5MjU",
     "nama": "CyberSel",
     "profileLink": "/hunter/profile/?nick=CyberSel",
     "detailPage": "/e-learning/A01/?id=9",
     "link": "./?id=9",
     "channel_yt": "https://www.youtube.com/channel/UCcPE-oGHTgGwaZRDQyUZBsA?source_ve_path=MzY5MjU"
+  },
+  {
+    "id": 10,
+    "category": "sqli",
+    "title": "PoC Sql Injection blind-based mesujikab.go.id",
+    "image": "../../../imej/instansi/mesujikab.png",
+    "description": "Proof of Concept Sql Injection blind-based | #TSecNetwork2025 #TsecnetworkHackerCommunity.",
+    "embed": "https://www.youtube.com/embed/MXdhv_TitM8?si=isERWfle_TUDDwHl",
+    "date": "15-March-2025",
+    "channel": "https://www.youtube.com/@Aghastyya",
+    "nama": "m00ch1",
+    "profileLink": "/hunter/profile/?nick=m00ch1",
+    "detailPage": "/e-learning/A01/?id=10",
+    "link": "./?id=10",
+    "channel_yt": "https://www.youtube.com/@Aghastyya"
   }
+  
 ]
