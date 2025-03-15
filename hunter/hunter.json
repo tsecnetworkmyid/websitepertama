@@ -232,29 +232,6 @@
         "tele": ""
     },
     {
-        "id": 11,
-        "nick": "irkid",
-        "status": "Aktif",
-        "videoCount": 0,
-        "rank": "Proffesional",
-        "profileLink": "/hunter/profile/?nick=irkid",
-        "email": "-",
-        "other": "",
-        "join": "2025",
-        "ahli1": "",
-        "ahli2": "",
-        "ahli3": "",
-        "ahli4": "",
-        "ahli5": "",
-        "ahli6": "",
-        "linkedin": "",
-        "tiktok": "",
-        "zoneh": "",
-        "zonex": "",
-        "channel_yt": "",
-        "tele": ""
-    },
-    {
         "id": 12,
         "nick": "54N664R4",
         "status": "Aktif",
@@ -301,7 +278,7 @@
         "tele": ""
     },
     {
-        "id": 14,
+        "id": 11,
         "nick": "m00ch1",
         "status": "Aktif",
         "videoCount": 1,
