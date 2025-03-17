@@ -127,6 +127,21 @@
     "detailPage": "/e-learning/A01/?id=10",
     "link": "./?id=10",
     "channel_yt": "https://www.youtube.com/@Aghastyya"
+  },
+  {
+    "id": 10,
+    "category": "xss",
+    "title": "Dom Based XSS - Swagger UI",
+    "image": "../../../imej/instansi/xss.png",
+    "description": "Dom Based XSS - Swagger UI | #TSecNetwork2025 #TsecnetworkHackerCommunity.",
+    "embed": "https://www.youtube.com/embed/jaEWY0r98ZA?si=US1CqX1DW96VdKUP",
+    "date": "17-March-2025",
+    "channel": "https://www.youtube.com/channel/UCcPE-oGHTgGwaZRDQyUZBsA",
+    "nama": "m00ch1",
+    "profileLink": "/hunter/profile/?nick=m00ch1",
+    "detailPage": "/e-learning/A01/?id=10",
+    "link": "./?id=10",
+    "channel_yt": "https://www.youtube.com/channel/UCcPE-oGHTgGwaZRDQyUZBsA"
   }
   
 ]
