@@ -157,6 +157,21 @@
     "detailPage": "/e-learning/A01/?id=11",
     "link": "./?id=11",
     "channel_yt": "https://www.youtube.com/@tsecnetwork4896"
+  },
+  {
+    "id": 12,
+    "category": "sqli",
+    "title": "SQL Injection Exploitaion union query manual **.kemendagri.go.id",
+    "image": "../../../imej/instansi/kemendagri.jpg",
+    "description": "poc SQLi | #TSecNetwork2025 #TsecnetworkHackerCommunity.",
+    "embed": "https://www.youtube.com/embed/_JlMAapIG7k?si=D7kDglPxHF7l3pFm",
+    "date": "20-March-2025",
+    "channel": "https://www.youtube.com/channel/UCcPE-oGHTgGwaZRDQyUZBsA?source_ve_path=MzY5MjU",
+    "nama": "CyberSel",
+    "profileLink": "/hunter/profile/?nick=CyberSel",
+    "detailPage": "/e-learning/A01/?id=12",
+    "link": "./?id=12",
+    "channel_yt": "https://www.youtube.com/channel/UCcPE-oGHTgGwaZRDQyUZBsA?source_ve_path=MzY5MjU"
   }
   
 ]
