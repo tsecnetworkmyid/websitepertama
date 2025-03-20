@@ -10,8 +10,8 @@
     "channel": "https://www.youtube.com/@tsecnetwork4896",
     "nama": "./SaklarRusak",
     "profileLink": "/hunter/profile/?nick=./SaklarRusak",
-    "detailPage": "/e-learning/A01/?id=8",
-    "link": "./?id=8",
+    "detailPage": "/e-learning/A01/?id=7",
+    "link": "./?id=7",
     "channel_yt": "https://www.youtube.com/@tsecnetwork4896"
   },
   {
@@ -39,8 +39,8 @@
     "channel": "https://www.youtube.com/@tsecnetwork4896",
     "nama": "./SaklarRusak",
     "profileLink": "../../hunter/profile/?nick=./SaklarRusak",
-    "detailPage": "/e-learning/A01/?id=4",
-    "link": "./?id=4"
+    "detailPage": "/e-learning/A01/?id=3",
+    "link": "./?id=3"
   },
   {
     "id": 1,
@@ -67,8 +67,8 @@
     "channel": "https://www.youtube.com/@aneitherguy",
     "nama": "fitwilliamx1337",
     "profileLink": "../../hunter/profile/?nick=fitwilliamx1337",
-    "detailPage": "/e-learning/A01/?id=6",
-    "link": "./?id=6"
+    "detailPage": "/e-learning/A01/?id=5",
+    "link": "./?id=5"
   },
   {
     "id": 6,
@@ -81,8 +81,8 @@
     "channel": "https://www.youtube.com/@aneitherguy",
     "nama": "fitwilliamx1337",
     "profileLink": "../../hunter/profile/?nick=fitwilliamx1337",
-    "detailPage": "/e-learning/A01/?id=7",
-    "link": "./?id=7"
+    "detailPage": "/e-learning/A01/?id=6",
+    "link": "./?id=6"
   },
   {
     "id": 4,
@@ -95,8 +95,8 @@
     "channel": "https://www.youtube.com/@aneitherguy",
     "nama": "fitwilliamx1337",
     "profileLink": "../../hunter/profile/?nick=fitwilliamx1337",
-    "detailPage": "/e-learning/A01/?id=5",
-    "link": "./?id=5"
+    "detailPage": "/e-learning/A01/?id=4",
+    "link": "./?id=4"
   },
   {
     "id": 8,
@@ -109,8 +109,8 @@
     "channel": "https://www.youtube.com/channel/UCcPE-oGHTgGwaZRDQyUZBsA?source_ve_path=MzY5MjU",
     "nama": "CyberSel",
     "profileLink": "/hunter/profile/?nick=CyberSel",
-    "detailPage": "/e-learning/A01/?id=9",
-    "link": "./?id=9",
+    "detailPage": "/e-learning/A01/?id=8",
+    "link": "./?id=8",
     "channel_yt": "https://www.youtube.com/channel/UCcPE-oGHTgGwaZRDQyUZBsA?source_ve_path=MzY5MjU"
   },
   {
@@ -124,12 +124,12 @@
     "channel": "https://www.youtube.com/@Aghastyya",
     "nama": "m00ch1",
     "profileLink": "/hunter/profile/?nick=m00ch1",
-    "detailPage": "/e-learning/A01/?id=10",
-    "link": "./?id=10",
+    "detailPage": "/e-learning/A01/?id=9",
+    "link": "./?id=9",
     "channel_yt": "https://www.youtube.com/@Aghastyya"
   },
   {
-    "id": 11,
+    "id": 10,
     "category": "xss",
     "title": "Dom Based XSS - Swagger UI",
     "image": "../../../imej/instansi/xss.png",
@@ -139,8 +139,8 @@
     "channel": "https://www.youtube.com/channel/UCcPE-oGHTgGwaZRDQyUZBsA",
     "nama": "CyberSel",
     "profileLink": "/hunter/profile/?nick=CyberSel",
-    "detailPage": "/e-learning/A01/?id=11",
-    "link": "./?id=11",
+    "detailPage": "/e-learning/A01/?id=10",
+    "link": "./?id=10",
     "channel_yt": "https://www.youtube.com/channel/UCcPE-oGHTgGwaZRDQyUZBsA"
   }
   
