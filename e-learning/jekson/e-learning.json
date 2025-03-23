@@ -187,6 +187,36 @@
     "detailPage": "/e-learning/A01/?id=13",
     "link": "./?id=13",
     "channel_yt": "https://www.youtube.com/@FoxxZeroDay"
+  },
+  {
+    "id": 14,
+    "category": "csrf",
+    "title": "PoC intercom.com. CSRF Token Reuse Across Sessions and Users",
+    "image": "../../../imej/instansi/intercom.jpg",
+    "description": "hi gusy welcome to my channel youtube video #bugcrowd #chatgpt #bugbounty #followerseveryone #fyp | #TSecNetwork2025 #TsecnetworkHackerCommunity.",
+    "embed": "https://www.youtube.com/embed/XXwAQjcS2pc?si=vR2mJRtBf7rWGL8W",
+    "date": "23-March-2025",
+    "channel": "https://www.youtube.com/@XDevTools",
+    "nama": "pelioro",
+    "profileLink": "/hunter/profile/?nick=pelioro",
+    "detailPage": "/e-learning/A01/?id=14",
+    "link": "./?id=14",
+    "channel_yt": "https://www.youtube.com/@XDevTools"
+  },
+  {
+    "id": 15,
+    "category": "unknown",
+    "title": "LIVE!! Bughunting on *biocorellc.com",
+    "image": "../../../imej/instansi/bug.jpg",
+    "description": "hi gusy welcome to my channel youtube video #bugcrowd #chatgpt #bugbounty #followerseveryone #fyp | #TSecNetwork2025 #TsecnetworkHackerCommunity.",
+    "embed": "https://www.youtube.com/embed/DDx2u0ZBuFI?si=RwTWSl0dpm4XU1HW",
+    "date": "23-March-2025",
+    "channel": "https://www.youtube.com/@XDevTools",
+    "nama": "pelioro",
+    "profileLink": "/hunter/profile/?nick=pelioro",
+    "detailPage": "/e-learning/A01/?id=15",
+    "link": "./?id=15",
+    "channel_yt": "https://www.youtube.com/@XDevTools"
   }
   
 ]
