@@ -299,5 +299,28 @@
         "zonex": "",
         "channel_yt": "https://www.youtube.com/@Aghastyya",
         "tele": ""
+    },
+    {
+        "id": 15,
+        "nick": "FoxxsClay",
+        "status": "Aktif",
+        "videoCount": 1,
+        "rank": "Proffesional",
+        "profileLink": "/hunter/profile/?nick=FoxxsClay",
+        "email": "foxxsclay77@proton.me",
+        "other": "",
+        "join": "2025",
+        "ahli1": "Bug Hunter",
+        "ahli2": "Pentration Tester",
+        "ahli3": "",
+        "ahli4": "",
+        "ahli5": "",
+        "ahli6": "",
+        "linkedin": "",
+        "tiktok": "http://tiktok.com/@FoxxsClay",
+        "zoneh": "",
+        "zonex": "",
+        "channel_yt": "https://www.youtube.com/@FoxxZeroDay",
+        "tele": "https://t.me/@ArchiveGovernment"
     }
 ]
