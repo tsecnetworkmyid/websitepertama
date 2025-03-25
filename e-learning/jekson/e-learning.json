@@ -176,7 +176,7 @@
   {
     "id": 13,
     "category": "unknown",
-    "title": "Bug di BRI.co.id - CORS Misconfiguration & Unrestricted JWT Generation 🔥",
+    "title": "Bug di BRI.co.id - CORS Misconfiguration & Unrestricted JWT Generation ",
     "image": "../../../imej/instansi/bri.jpg",
     "description": "Dalam video ini, saya akan menunjukkan bukti eksploitasi langsung (POC) dari kerentanan CORS Misconfiguration & Unrestricted JWT Generation pada sistem BRI.co.id. Dengan celah ini, seorang penyerang bisa mendapatkan JSON Web Token (JWT) tanpa autentikasi yang valid, yang berpotensi digunakan untuk eskalasi akses atau serangan lebih lanjut. |⚡️ Detail Kerentanan:✅ Jenis: CORS Misconfiguration & Unrestricted JWT Generation✅ CVSS Score: 6.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:L/I:L/A:N)✅ Dampak:1. Penyerang bisa mendapatkan JWT secara tidak sah dan menggunakannya untuk akses yang tidak diotorisasi.2. CORS Misconfiguration memungkinkan semua domain untuk mengakses API tanpa pembatasan, termasuk domain jahat yang dikendalikan oleh penyerang. | #TSecNetwork2025 #TsecnetworkHackerCommunity.",
     "embed": "https://www.youtube.com/embed/0AQZq-ywAso?si=FCfn2GqTw5JuOu2y",
@@ -218,5 +218,4 @@
     "link": "./?id=15",
     "channel_yt": "https://www.youtube.com/@XDevTools"
   }
-  
 ]
