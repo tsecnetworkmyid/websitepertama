@@ -234,7 +234,7 @@
   },
   {
     "id": 17,
-    "category": "xss",
+    "category": "unknown",
     "title": "Account takeovers via 0auth",
     "description": "#thc25 #tsecnetworkhackercommunity2025",
     "image": "https://www.freelancinggig.com/blog/wp-content/uploads/2022/11/account-takeover.png",
