@@ -231,5 +231,19 @@
     "profileLink": "/hunter/profile/?nick=FoxxsClay",
     "detailPage": "/e-learning/A01/?id=16",
     "link": "./?id=16"
+  },
+  {
+    "id": 17,
+    "category": "xss",
+    "title": "Account takeovers via 0auth",
+    "description": "#thc25 #tsecnetworkhackercommunity2025",
+    "image": "https://www.freelancinggig.com/blog/wp-content/uploads/2022/11/account-takeover.png",
+    "embed": "https://www.youtube.com/embed/yFtBabhaa94?si=ElLXt2DZQoyGc6pr",
+    "date": "28-March-2025",
+    "channel": "https://www.youtube.com/@XDevTools",
+    "nama": "pelioro",
+    "profileLink": "/hunter/profile/?nick=pelioro",
+    "detailPage": "/e-learning/A01/?id=17",
+    "link": "./?id=17"
   }
 ]
