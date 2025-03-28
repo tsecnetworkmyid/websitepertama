@@ -217,5 +217,19 @@
     "detailPage": "/e-learning/A01/?id=15",
     "link": "./?id=15",
     "channel_yt": "https://www.youtube.com/@XDevTools"
+  },
+  {
+    "id": 16,
+    "category": "xss",
+    "title": "Challenge XSS - PoC - 2025",
+    "description": "Cross-Site Scripting (XSS) adalah celah keamanan di website yang memungkinkan penyerang menyisipkan kode JavaScript berbahaya ke dalam halaman web yang akan dieksekusi di browser korban",
+    "image": "../../../imej/instansi/xss.png",
+    "embed": "https://www.youtube.com/embed/qakKCwc6IGk?si=w20AhpGUpSwcW0qM",
+    "date": "28-March-2025",
+    "channel": "https://www.youtube.com/@FoxxZeroDay",
+    "nama": "FoxxsClay",
+    "profileLink": "/hunter/profile/?nick=FoxxsClay",
+    "detailPage": "/e-learning/A01/?id=16",
+    "link": "./?id=16"
   }
 ]
