@@ -259,5 +259,19 @@
     "profileLink": "/hunter/profile/?nick=pelioro",
     "detailPage": "/e-learning/A01/?id=18",
     "link": "./?id=18"
+  },
+  {
+    "id": 19,
+    "category": "unknown",
+    "title": "Race Condition duplicate name account sandbox | SIGNICAT",
+    "description": "#thc25",
+    "image": "https://helpx-prod.scene7.com/is/image/HelpxProd/Signicat_logo_positive_RGB_large%20-%20400?$png$&jpegSize=100&wid=399",
+    "embed": "https://www.youtube.com/embed/3KSo4h3CiPA?si=7K36Y2QUdX9yN7Mp",
+    "date": "19-May-2025",
+    "channel": "https://www.youtube.com/@XDevTools",
+    "nama": "pelioro",
+    "profileLink": "/hunter/profile/?nick=pelioro",
+    "detailPage": "/e-learning/A01/?id=19",
+    "link": "./?id=19"
   }
 ]
