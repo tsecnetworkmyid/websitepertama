@@ -245,5 +245,19 @@
     "profileLink": "/hunter/profile/?nick=pelioro",
     "detailPage": "/e-learning/A01/?id=17",
     "link": "./?id=17"
+  },
+  {
+    "id": 18,
+    "category": "unknown",
+    "title": "Email Alias Bypass Leads to Duplicate Account Creation (Email Enumeration & Mass Account Farming)",
+    "description": "Bughunting on coda \n#bughunting #hackerone #viral #fyp",
+    "image": "https://upload.wikimedia.org/wikipedia/en/3/3f/Coda_%28document_editor%29_logo.png",
+    "embed": "https://www.youtube.com/embed/AuboiHmKHb4?si=Gq5s6RSmwN1YLeXX",
+    "date": "19-May-2025",
+    "channel": "https://www.youtube.com/@XDevTools",
+    "nama": "pelioro",
+    "profileLink": "/hunter/profile/?nick=pelioro",
+    "detailPage": "/e-learning/A01/?id=18",
+    "link": "./?id=18"
   }
 ]
