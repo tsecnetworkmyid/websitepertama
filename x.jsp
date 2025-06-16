@@ -6,17 +6,9 @@
 <%@ page import="org.apache.commons.fileupload.servlet.*" %>
 
 <%!
-    // Configuration - CHANGE THESE VALUES
-    private static final String PASSWORD = "admin123"; // Change this password
-    private static final String SESSION_AUTH_KEY = "filemanager_auth";
+    // Configuration
     private static final String[] ALLOWED_UPLOAD_EXTENSIONS = {".txt", ".log", ".jsp", ".html", ".css", ".js", ".jpg", ".png", ".gif"};
     private static final long MAX_UPLOAD_SIZE = 10 * 1024 * 1024; // 10MB
-    
-    // Check if user is authenticated
-    private boolean isAuthenticated(HttpSession session) {
-        return session.getAttribute(SESSION_AUTH_KEY) != null && 
-               session.getAttribute(SESSION_AUTH_KEY).equals(PASSWORD);
-    }
     
     // Check if file extension is allowed for upload
     private boolean isAllowedExtension(String filename) {
@@ -39,55 +31,6 @@
 %>
 
 <%
-    // Authentication check
-    if (!isAuthenticated(session)) {
-        String passwordAttempt = request.getParameter("password");
-        if (passwordAttempt != null && passwordAttempt.equals(PASSWORD)) {
-            session.setAttribute(SESSION_AUTH_KEY, PASSWORD);
-        } else {
-%>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>File Manager - Login</title>
-    <style>
-        body { background-color: #000; color: #ddd; font-family: Arial, sans-serif; }
-        .login-box { 
-            width: 300px; 
-            margin: 100px auto; 
-            padding: 20px; 
-            background-color: #222; 
-            border: 1px solid #f00; 
-            border-radius: 5px;
-            box-shadow: 0 0 10px #f00;
-        }
-        h2 { color: #f00; text-align: center; }
-        input[type="password"], input[type="submit"] {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0;
-            box-sizing: border-box;
-        }
-        input[type="password"] { background-color: #333; color: #fff; border: 1px solid #f00; }
-        input[type="submit"] { background-color: #f00; color: #fff; border: none; cursor: pointer; }
-        input[type="submit"]:hover { background-color: #c00; }
-    </style>
-</head>
-<body>
-    <div class="login-box">
-        <h2>File Manager Login</h2>
-        <form method="POST">
-            <input type="password" name="password" placeholder="Password" required>
-            <input type="submit" value="Login">
-        </form>
-    </div>
-</body>
-</html>
-<%
-            return;
-        }
-    }
-
     // Handle file upload
     if ("POST".equalsIgnoreCase(request.getMethod()) && 
         ServletFileUpload.isMultipartContent(request)) {
@@ -279,19 +222,11 @@
         .breadcrumb a:hover { 
             text-decoration: underline;
         }
-        .logout-link { 
-            float: right; 
-            color: #f00; 
-            text-decoration: none;
-        }
-        .logout-link:hover { 
-            text-decoration: underline;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Power File Manager <a href="?logout=1" class="logout-link">Logout</a></h1>
+        <h1>Power File Manager</h1>
         
         <% if (request.getAttribute("operationMessage") != null) { %>
             <div class="operation-panel"><%= request.getAttribute("operationMessage") %></div>
@@ -414,10 +349,3 @@
     </div>
 </body>
 </html>
-<%
-    // Handle logout
-    if (request.getParameter("logout") != null) {
-        session.removeAttribute(SESSION_AUTH_KEY);
-        response.sendRedirect(request.getRequestURI());
-    }
-%>
