@@ -6,7 +6,7 @@
         "videoCount": 4,
         "rank": "Proffesional", 
         "profileLink": "/hunter/profile/?nick=SaklarRusak",
-        "email": "severityhunting1337@protonmail.com",
+        "email": "saklarrusak@tsecnetwork.my.id",
         "other": "",
         "join": "2019/2020",
         "ahli1": "Bug Hunter",
@@ -15,13 +15,14 @@
         "ahli4": "",
         "ahli5": "",
         "ahli6": "",
-        "linkedin": "https://www.linkedin.com/in/muhammad-thoriq-703b2a315/",
+        "linkedin": "https://www.linkedin.com/in/muhammad-thoriq-24aa84354/",
         "tiktok": "https://www.tiktok.com/@.saklarrusak",
         "zoneh": "https://zone-h.org/archive/notifier=.%252FSaklarRusak",
         "zonex": "https://zone-xsec.com/archive/attacker/.%252FSaklarRusak",
         "channel_yt": "https://www.youtube.com/@tsecnetwork4896",
+        "github": "",
         "tele": "https://t.me/LetmeSaklar",
-        "linkfoto": "/imej/1756874285828.png"
+        "linkfoto": "/imej/profil.jpg"
     },
     {
         "id": 2,
@@ -44,7 +45,8 @@
         "zoneh": "",
         "zonex": "",
         "channel_yt": "https://www.youtube.com/@aneitherguy/videos",
-        "tele": ""
+        "tele": "",
+        "linkfoto": "/imej/fitwilliamx12.jpg"
 
     },
     {
@@ -68,7 +70,8 @@
         "zoneh": "",
         "zonex": "",
         "channel_yt": "",
-        "tele": ""
+        "tele": "",
+        "linkfoto": "/imej/noctivaq.jpg"
     },
     
     {
@@ -92,7 +95,8 @@
         "zoneh": "https://www.zone-h.org/archive/notifier=K4PUYU4K",
         "zonex": "https://zone-xsec.com/archive/attacker/K4PUYU4K",
         "channel_yt": "",
-        "tele": "https://t.me/K4PUYU4K"
+        "tele": "https://t.me/K4PUYU4K",
+        "linkfoto": "/imej/k4puyu4k.jpg"
     },
     {
         "id": 5,
@@ -112,10 +116,12 @@
         "ahli6": "",
         "linkedin": "",
         "tiktok": "",
+        "github": "https://github.com/Malam-X",
         "zoneh": "",
         "zonex": "",
         "channel_yt": "https://www.youtube.com/@dr4gclew552",
-        "tele": ""
+        "tele": "",
+        "linkfoto": "/imej/temo.jpg"
     },
     {
         "id": 6,
@@ -138,7 +144,8 @@
         "zoneh": "",
         "zonex": "",
         "channel_yt": "",
-        "tele": ""
+        "tele": "",
+        "linkfoto": "/imej/el.png"
     },
     {
         "id": 7,
@@ -160,7 +167,8 @@
         "tiktok": "",
         "zonex": "https://zone-xsec.com/archive/attacker/tn.mdk/page=9",
         "channel_yt": "",
-        "tele": ""
+        "tele": "",
+        "linkfoto": "/imej/tnmdk.jpg"
     },
     {
         "id": 8,
@@ -183,7 +191,8 @@
         "zoneh": "",
         "zonex": "",
         "channel_yt": "https://www.youtube.com/@tanahpenuhprogram",
-        "tele": ""
+        "tele": "",
+        "linkfoto": "/imej/wsluser.jpg"
     },
     {
         "id": 9,
@@ -191,7 +200,7 @@
         "status": "Tidak Aktif",
         "videoCount": -999999,
         "rank": "Proffesional",
-        "profileLink": "/hunter/profile/?nick=halisia",
+        "profileLink": "/hunter/profile/?nick=NetSleuth",
         "email": "",
         "other": "",
         "join": "2019/2020",
@@ -206,7 +215,8 @@
         "zoneh": "",
         "zonex": "",
         "channel_yt": "",
-        "tele": ""
+        "tele": "",
+        "linkfoto": "/imej/kak_resa.png"
     },
     {
         "id": 10,
@@ -225,11 +235,13 @@
         "ahli5": "",
         "ahli6": "",
         "linkedin": "",
+        "github" : "https://github.com/kamley",
         "tiktok": "",
         "zoneh": "",
         "zonex": "",
         "channel_yt": "",
-        "tele": ""
+        "tele": "",
+        "linkfoto": "/imej/kamley.jpg"
     },
     {
         "id": 12,
@@ -252,7 +264,8 @@
         "zoneh": "",
         "zonex": "",
         "channel_yt": "",
-        "tele": ""
+        "tele": "",
+        "linkfoto": "/imej/sandi_anggara.jpg"
     },
     {
         "id": 13,
@@ -298,7 +311,8 @@
         "zoneh": "",
         "zonex": "",
         "channel_yt": "https://www.youtube.com/@Aghastyya",
-        "tele": ""
+        "tele": "",
+        "linkfoto": "/imej/m00ch1.jpg"
     },
     {
         "id": 15,
@@ -321,7 +335,8 @@
         "zoneh": "",
         "zonex": "",
         "channel_yt": "https://www.youtube.com/@FoxxZeroDay",
-        "tele": "https://t.me/@ArchiveGovernment"
+        "tele": "https://t.me/@ArchiveGovernment",
+        "linkfoto": "/imej/foxxsclay.jpg"
     },
     {
         "id": 16,
@@ -341,9 +356,11 @@
         "ahli6": "",
         "linkedin": "",
         "tiktok": "https://www.tiktok.com/@jaxthewhitehat",
+        "github": "https://github.com/AryzXploit",
         "zoneh": "",
         "zonex": "",
         "channel_yt": "https://www.youtube.com/@XDevTools",
-        "tele": ""
+        "tele": "",
+        "linkfoto": "/imej/pelioro.jpg"
     }
 ]
