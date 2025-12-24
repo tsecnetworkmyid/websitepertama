@@ -102,5 +102,20 @@
         "content": "hubungi saya untuk informasi lebih lanjut ------------------------------->             email: severityhunting1337@protonmail.com",
         "link": "./A01/?id=7",
         "detailPage": "/news/A01/?id=7"  
+    },
+    {
+        "id": 8,
+        "category": "event",
+        "title": "Ironday Tools - Alat keamanan dan penetrasi ringan",
+        "image": "/imej/ironday.jpg",
+        "postedDate": "20 February 2025",
+        "lastModified": "20 February 2025",
+        "postinguser": "admin",
+        "description": "alat keamanan dan penetrasi ringan",
+        "content": "IRON-DAY adalah sebuah Security Toolkit yang dibuat untuk membantu pengguna dalam memahami dan menguji keamanan sistem komputer dan jaringan. Aplikasi ini menyediakan beberapa modul utama seperti Security dan Pentesting, yang dikemas dalam tampilan GUI modern dengan nuansa cyber dan teknologi tinggi.",
+        "content2": "Dengan IRON-DAY, pengguna tidak hanya menjalankan tools, tetapi juga belajar bagaimana sistem keamanan bekerja, bagaimana celah keamanan ditemukan, dan bagaimana serangan dapat disimulasikan secara etis. Aplikasi ini cocok untuk mahasiswa IT, praktisi keamanan, dan siapa saja yang ingin mendalami dunia cybersecurity.",
+        "content3" : "link downloads : <a href='/asdsa'>Click for Downloads</a>",
+        "link": "./A01/?id=8",
+        "detailPage": "/news/A01/?id=8"  
     }
 ]
