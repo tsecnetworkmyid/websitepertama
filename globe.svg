@@ -44,14 +44,14 @@
   <!-- text center -->
   <text x="400" y="190" class="main">
     hacked by ./SaklarRusak
-  </text>
+  </text> 
 
   <text x="400" y="230" class="sub">
-    tsecnetworkhc team - k4puyu4k - halisia - temo - cepu_sosial
+   <a href="https://tsecnetwork.my.id" >tsecnetwork.my.id : k4puyu4k - halisia - temo - cepu_sosial </a>
   </text>
 
  <text x="400" y="330" class="subb">
-    #FuckYou_Sea_Games_2025 #FuckYou_Thailand
+    #FuckYou_Sea_Games_2025 #FuckYou_Mafia
   </text>
 
   <script type="application/ecmascript"><![CDATA[
