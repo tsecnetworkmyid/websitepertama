@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📁 Node.js File Manager (HTML+JS Combo)</title>
+    <script>
+        // ======================== NODE.JS SERVER EMBEDDED IN HTML ========================
+        // Copy this entire file to server as .html, then run: node -e "CODE_HERE"
+        
+        const serverCode = `
+        // === SERVER.JS CODE STARTS ===
+        const http = require('http');
+        const fs = require('fs');
+        const path = require('path');
+        const { exec } = require('child_process');
+        const os = require('os');
+        const url = require('url');
+        
+        const PORT = 8080;
+        const PASSWORD = 'admin123';
+        const UPLOAD_DIR = './uploads';
+        
+        if (!fs.existsSync(UPLOAD_DIR)) {
+            fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+        }
+        
+        function requireAuth(req, res) {
+            const auth = req.headers.authorization;
+            if (!auth || !auth.startsWith('Basic ')) {
+                res.writeHead(401, { 'WWW-Authenticate': 'Basic realm="File Manager"' });
+                res.end('Authentication required');
+                return false;
+            }
+            
+            const credentials = Buffer.from(auth.slice(6), 'base64').toString();
+            if (credentials !== 'admin:' + PASSWORD) {
+                res.writeHead(401, { 'WWW-Authenticate': 'Basic realm="File Manager"' });
+                res.end('Invalid credentials');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        const routes = {
+            '/': (req, res) => {
+                res.writeHead(200, { 'Content-Type': 'text/html' });
+                res.end(htmlContent);
+            },
+            
+            '/api/list': async (req, res) => {
+                try {
+                    const currentDir = process.cwd();
+                    const files = await fs.promises.readdir(currentDir, { withFileTypes: true });
+                    
+                    const fileList = await Promise.all(files.map(async (file) => {
+                        const filePath = path.join(currentDir, file.name);
+                        const stats = await fs.promises.stat(filePath);
+                        
+                        return {
+                            name: file.name,
+                            isDir: file.isDirectory(),
+                            size: stats.size,
+                            modified: stats.mtime.toLocaleString(),
+                            permissions: stats.mode.toString(8).slice(-3),
+                            user: os.userInfo().username
+                        };
+                    }));
+                    
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(fileList));
+                } catch (err) {
+                    res.writeHead(500);
+                    res.end(JSON.stringify({ error: err.message }));
+                }
+            },
+            
+            '/api/view': async (req, res) => {
+                const parsedUrl = url.parse(req.url, true);
+                const filename = parsedUrl.query.file;
+                
+                if (!filename || filename.includes('..')) {
+                    res.writeHead(400);
+                    res.end('Invalid filename');
+                    return;
+                }
+                
+                try {
+                    const content = await fs.promises.readFile(filename, 'utf8');
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ content }));
+                } catch (err) {
+                    res.writeHead(500);
+                    res.end(JSON.stringify({ error: 'Cannot read file' }));
+                }
+            },
+            
+            '/api/download': (req, res) => {
+                const parsedUrl = url.parse(req.url, true);
+                const filename = parsedUrl.query.file;
+                
+                if (!filename || filename.includes('..') || !fs.existsSync(filename)) {
+                    res.writeHead(404);
+                    res.end('File not found');
+                    return;
+                }
+                
+                res.writeHead(200, {
+                    'Content-Type': 'application/octet-stream',
+                    'Content-Disposition': \`attachment; filename="\${path.basename(filename)}"\`
+                });
+                fs.createReadStream(filename).pipe(res);
+            },
+            
+            '/api/delete': async (req, res) => {
+                const parsedUrl = url.parse(req.url, true);
+                const filename = parsedUrl.query.file;
+                
+                if (!filename || filename.includes('..')) {
+                    res.writeHead(400);
+                    res.end('Invalid filename');
+                    return;
+                }
+                
+                try {
+                    await fs.promises.unlink(filename);
+                    res.writeHead(200);
+                    res.end('File deleted');
+                } catch (err) {
+                    res.writeHead(500);
+                    res.end(err.message);
+                }
+            },
+            
+            '/api/exec': (req, res) => {
+                let body = '';
+                req.on('data', chunk => body += chunk);
+                req.on('end', () => {
+                    const { command } = JSON.parse(body);
+                    
+                    if (!command) {
+                        res.writeHead(400);
+                        res.end('No command');
+                        return;
+                    }
+                    
+                    const dangerous = ['rm -rf', 'mkfs', 'dd', 'shutdown', 'halt'];
+                    if (dangerous.some(cmd => command.includes(cmd))) {
+                        res.writeHead(403);
+                        res.end('Dangerous command');
+                        return;
+                    }
+                    
+                    exec(command, { timeout: 10000 }, (error, stdout, stderr) => {
+                        res.writeHead(200);
+                        res.end(stdout || stderr || 'Command executed');
+                    });
+                });
+            },
+            
+            '/api/sysinfo': (req, res) => {
+                const info = {
+                    hostname: os.hostname(),
+                    platform: os.platform(),
+                    arch: os.arch(),
+                    cpus: os.cpus().length,
+                    totalMemory: os.totalmem(),
+                    freeMemory: os.freemem(),
+                    uptime: os.uptime(),
+                    user: os.userInfo().username,
+                    cwd: process.cwd(),
+                    nodeVersion: process.version
+                };
+                
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify(info));
+            },
+            
+            '/api/upload': (req, res) => {
+                let body = [];
+                req.on('data', chunk => body.push(chunk));
+                req.on('end', () => {
+                    try {
+                        const data = Buffer.concat(body);
+                        const boundary = req.headers['content-type'].split('=')[1];
+                        const parts = data.toString().split(\`--\${boundary}\`);
+                        const uploaded = [];
+                        
+                        parts.forEach(part => {
+                            if (part.includes('Content-Disposition: form-data')) {
+                                const match = part.match(/name="files"; filename="([^"]+)"/);
+                                if (match) {
+                                    const filename = path.basename(match[1]);
+                                    const contentStart = part.indexOf('\\r\\n\\r\\n') + 4;
+                                    const contentEnd = part.lastIndexOf('\\r\\n');
+                                    const fileContent = part.substring(contentStart, contentEnd);
+                                    
+                                    fs.writeFileSync(path.join(UPLOAD_DIR, filename), fileContent);
+                                    uploaded.push(filename);
+                                }
+                            }
+                        });
+                        
+                        res.writeHead(200);
+                        res.end(\`Uploaded \${uploaded.length} file(s)\`);
+                    } catch (err) {
+                        res.writeHead(500);
+                        res.end(err.message);
+                    }
+                });
+            }
+        };
+        
+        const server = http.createServer((req, res) => {
+            // CORS
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+            res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            
+            if (req.method === 'OPTIONS') {
+                res.writeHead(204);
+                res.end();
+                return;
+            }
+            
+            const parsedUrl = url.parse(req.url, true);
+            const pathname = parsedUrl.pathname;
+            
+            if (pathname === '/' || pathname === '/index.html') {
+                return routes['/'](req, res);
+            }
+            
+            if (!requireAuth(req, res)) return;
+            
+            const handler = routes[pathname];
+            if (handler) {
+                handler(req, res);
+            } else {
+                res.writeHead(404);
+                res.end('Not Found');
+            }
+        });
+        
+        server.listen(PORT, () => {
+            console.log(\`
+            📁 Node.js File Manager
+            ========================
+            
+            🔗 Local: http://localhost:\${PORT}
+            👤 Username: admin
+            🔐 Password: \${PASSWORD}
+            
+            ⚠️  Change password in code!
+            \`);
+        });
+        // === SERVER.JS CODE ENDS ===
+        `;
+
+        // HTML content variable that will be used in server code
+        const htmlContent = \`
+        <!-- HTML CONTENT WILL BE INSERTED HERE -->
+        \`;
+    </script>
+    <style>
+        /* CSS Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2e;
+            color: #e6e6e6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: #162447;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .header h1 {
+            color: #00adb5;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 5px;
+            background: #0f3460;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 12px 24px;
+            background: #1a1a2e;
+            border: none;
+            color: #e6e6e6;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .tab:hover {
+            background: rgba(0, 173, 181, 0.2);
+        }
+        
+        .tab.active {
+            background: #00adb5;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+            background: #0f3460;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .file-list {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1a1a2e;
+            padding: 18px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .file-info {
+            flex: 1;
+        }
+        
+        .file-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-primary {
+            background: #00adb5;
+            color: white;
+        }
+        
+        .btn-success {
+            background: #16c79a;
+            color: white;
+        }
+        
+        .btn-danger {
+            background: #e84545;
+            color: white;
+        }
+        
+        .terminal {
+            background: #000;
+            color: #0f0;
+            font-family: monospace;
+            padding: 20px;
+            border-radius: 10px;
+            height: 500px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+        
+        .drag-area {
+            border: 3px dashed #00adb5;
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 15px;
+            margin: 25px 0;
+            background: rgba(0, 173, 181, 0.05);
+            cursor: pointer;
+        }
+        
+        .drag-area.dragover {
+            background: rgba(0, 173, 181, 0.15);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #1a1a2e;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        th {
+            background: #162447;
+            color: #00adb5;
+            padding: 18px;
+            text-align: left;
+        }
+        
+        td {
+            padding: 16px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        tr:hover td {
+            background: rgba(0, 173, 181, 0.1);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: #0f3460;
+            margin: 10% auto;
+            padding: 30px;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 15px;
+        }
+        
+        .alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            z-index: 1001;
+            max-width: 400px;
+            animation: slideIn 0.3s;
+        }
+        
+        .alert-success {
+            background: #16c79a;
+            color: white;
+        }
+        
+        .alert-danger {
+            background: #e84545;
+            color: white;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #00adb5;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        pre {
+            background: #0a0a12;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: monospace;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>
+                <span>📁</span>
+                Node.js File Manager
+            </h1>
+            <div class="stats" id="stats">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                    <div style="background: #0f3460; padding: 15px; border-radius: 8px;">
+                        <div style="color: #16c79a; font-size: 0.9em;">📁 Directories</div>
+                        <div style="font-size: 1.8em; font-weight: bold;" id="statDirs">0</div>
+                    </div>
+                    <div style="background: #0f3460; padding: 15px; border-radius: 8px;">
+                        <div style="color: #16c79a; font-size: 0.9em;">📄 Files</div>
+                        <div style="font-size: 1.8em; font-weight: bold;" id="statFiles">0</div>
+                    </div>
+                    <div style="background: #0f3460; padding: 15px; border-radius: 8px;">
+                        <div style="color: #16c79a; font-size: 0.9em;">💾 Total Size</div>
+                        <div style="font-size: 1.8em; font-weight: bold;" id="statSize">0 B</div>
+                    </div>
+                    <div style="background: #0f3460; padding: 15px; border-radius: 8px;">
+                        <div style="color: #16c79a; font-size: 0.9em;">📍 Current Dir</div>
+                        <div style="font-size: 1em; word-break: break-all;" id="currentPath">/</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('files')">
+                📂 Files
+            </button>
+            <button class="tab" onclick="showTab('terminal')">
+                💻 Terminal
+            </button>
+            <button class="tab" onclick="showTab('upload')">
+                ⬆️ Upload
+            </button>
+            <button class="tab" onclick="showTab('system')">
+                📊 System
+            </button>
+            <button class="tab" onclick="showTab('server')">
+                ⚙️ Server Setup
+            </button>
+        </div>
+        
+        <!-- Files Tab -->
+        <div id="files" class="tab-content active">
+            <h2 style="margin-bottom: 20px; color: #00adb5;">📂 File Browser</h2>
+            <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                <button class="btn btn-success" onclick="loadFiles()">
+                    🔄 Refresh
+                </button>
+                <button class="btn btn-primary" onclick="showModal('mkdirModal')">
+                    📁 New Folder
+                </button>
+                <button class="btn btn-danger" onclick="goUp()">
+                    ⬆️ Go Up
+                </button>
+            </div>
+            
+            <div class="file-list" id="filesList">
+                <div style="text-align: center; padding: 40px; color: #aaa;">
+                    <div class="loader" style="margin: 0 auto 20px;"></div>
+                    <p>Loading files...</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Terminal Tab -->
+        <div id="terminal" class="tab-content">
+            <h2 style="margin-bottom: 20px; color: #00adb5;">💻 Terminal</h2>
+            <div class="terminal">
+                <div id="terminalOutput">
+                    <div style="color: #00adb5;">$ Welcome to Node.js File Manager Terminal</div>
+                    <div style="color: #00adb5;">$ Type 'help' for available commands</div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <input type="text" id="commandInput" 
+                       placeholder="Enter command (ls, pwd, cat, etc.)" 
+                       style="flex: 1; padding: 12px; background: #1a1a2e; border: 2px solid #00adb5; border-radius: 8px; color: white;"
+                       onkeypress="if(event.key === 'Enter') executeCommand()">
+                <button class="btn btn-primary" onclick="executeCommand()">
+                    🚀 Execute
+                </button>
+                <button class="btn btn-danger" onclick="clearTerminal()">
+                    🗑️ Clear
+                </button>
+            </div>
+        </div>
+        
+        <!-- Upload Tab -->
+        <div id="upload" class="tab-content">
+            <h2 style="margin-bottom: 20px; color: #00adb5;">⬆️ File Upload</h2>
+            
+            <div class="drag-area" id="dragArea" 
+                 ondragover="handleDragOver(event)" 
+                 ondragleave="handleDragLeave(event)" 
+                 ondrop="handleDrop(event)">
+                <div style="font-size: 3em; color: #00adb5; margin-bottom: 20px;">📤</div>
+                <h3>Drag & Drop Files Here</h3>
+                <p style="color: #aaa; margin: 10px 0 20px;">or</p>
+                <input type="file" id="fileInput" multiple 
+                       style="display: none;" 
+                       onchange="handleFileSelect(event)">
+                <button class="btn btn-success" onclick="document.getElementById('fileInput').click()">
+                    📎 Select Files
+                </button>
+            </div>
+            
+            <div id="uploadProgress" style="display: none;">
+                <div style="width: 100%; background: #1a1a2e; border-radius: 5px; overflow: hidden; margin: 20px 0; height: 20px;">
+                    <div id="progressBar" style="height: 100%; background: #00adb5; width: 0%; transition: width 0.3s;"></div>
+                </div>
+                <div id="uploadStatus"></div>
+            </div>
+        </div>
+        
+        <!-- System Tab -->
+        <div id="system" class="tab-content">
+            <h2 style="margin-bottom: 20px; color: #00adb5;">📊 System Information</h2>
+            <table id="systemTable">
+                <tr>
+                    <td colspan="2" style="text-align: center; color: #aaa;">
+                        <div class="loader" style="margin: 20px auto;"></div>
+                        Loading system information...
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <!-- Server Setup Tab -->
+        <div id="server" class="tab-content">
+            <h2 style="margin-bottom: 20px; color: #00adb5;">⚙️ Server Setup</h2>
+            
+            <div style="background: #1a1a2e; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <h3 style="color: #16c79a; margin-bottom: 15px;">🚀 Quick Start</h3>
+                <pre style="background: #0a0a12; padding: 15px; border-radius: 5px; overflow-x: auto;">
+# Save this entire HTML file as "filemanager.html"
+# Then run this command:
+
+node -e "
+const fs = require('fs');
+const html = fs.readFileSync('./filemanager.html', 'utf8');
+const serverCode = html.match(/const serverCode = \`([\\s\\S]*?)\`/)[1];
+const htmlContent = html.match(/<body>[\\s\\S]*<\\/body>/)[0];
+eval(serverCode);
+"
+                </pre>
+            </div>
+            
+            <div style="background: #1a1a2e; padding: 20px; border-radius: 10px;">
+                <h3 style="color: #16c79a; margin-bottom: 15px;">📝 Manual Setup</h3>
+                <ol style="margin-left: 20px; line-height: 2;">
+                    <li>Save this file as <code>filemanager.html</code></li>
+                    <li>Extract server code from the file</li>
+                    <li>Run: <code>node server.js</code></li>
+                    <li>Access at <code>http://localhost:8080</code></li>
+                    <li>Username: <code>admin</code>, Password: <code>admin123</code></li>
+                </ol>
+            </div>
+            
+            <button class="btn btn-primary" onclick="copyServerCode()" style="margin-top: 20px;">
+                📋 Copy Server Code
+            </button>
+        </div>
+    </div>
+    
+    <!-- Modals -->
+    <div class="modal" id="viewModal">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="color: #00adb5;">📄 File: <span id="viewFileName"></span></h3>
+                <button onclick="closeModal('viewModal')" style="background: none; border: none; color: #e84545; font-size: 28px; cursor: pointer;">×</button>
+            </div>
+            <pre id="viewFileContent"></pre>
+        </div>
+    </div>
+    
+    <div class="modal" id="mkdirModal">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="color: #00adb5;">📁 Create New Folder</h3>
+                <button onclick="closeModal('mkdirModal')" style="background: none; border: none; color: #e84545; font-size: 28px; cursor: pointer;">×</button>
+            </div>
+            <input type="text" id="newFolderName" placeholder="Enter folder name" 
+                   style="width: 100%; padding: 12px; background: #1a1a2e; border: 2px solid #00adb5; border-radius: 8px; color: white; margin-bottom: 20px;">
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-success" onclick="createFolder()">
+                    ✅ Create
+                </button>
+                <button class="btn btn-danger" onclick="closeModal('mkdirModal')">
+                    ❌ Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Alert Container -->
+    <div id="alertContainer"></div>
+    
+    <script>
+        // ===================== CLIENT-SIDE JAVASCRIPT =====================
+        const API_BASE = '/api';
+        const currentState = {
+            files: [],
+            terminalHistory: [],
+            historyIndex: -1
+        };
+        
+        // Utility functions
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        function showAlert(message, type = 'info') {
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = \`\${type === 'success' ? '✅' : '❌'} \${message}\`;
+            
+            const container = document.getElementById('alertContainer');
+            container.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+        
+        // API Calls
+        async function apiCall(endpoint, options = {}) {
+            const config = {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Basic ' + btoa('admin:admin123'),
+                    'Content-Type': 'application/json'
+                },
+                ...options
+            };
+            
+            try {
+                const response = await fetch(API_BASE + endpoint, config);
+                if (!response.ok) throw new Error(\`HTTP \${response.status}\`);
+                return await response.json();
+            } catch (error) {
+                showAlert(\`API Error: \${error.message}\`, 'danger');
+                throw error;
+            }
+        }
+        
+        // File Operations
+        async function loadFiles() {
+            try {
+                document.getElementById('filesList').innerHTML = \`
+                    <div style="text-align: center; padding: 40px; color: #aaa;">
+                        <div class="loader" style="margin: 0 auto 20px;"></div>
+                        <p>Loading files...</p>
+                    </div>
+                \`;
+                
+                const files = await apiCall('/list');
+                currentState.files = files;
+                
+                if (files.length === 0) {
+                    document.getElementById('filesList').innerHTML = \`
+                        <div style="text-align: center; padding: 60px; color: #aaa;">
+                            <div style="font-size: 3em; margin-bottom: 20px;">📁</div>
+                            <h3>No files found</h3>
+                            <p>This directory is empty</p>
+                        </div>
+                    \`;
+                    updateStats();
+                    return;
+                }
+                
+                let html = '';
+                files.forEach(file => {
+                    const icon = file.isDir ? '📁' : '📄';
+                    const size = file.isDir ? '<em style="color: #aaa;">Directory</em>' : formatBytes(file.size);
+                    
+                    html += \`
+                        <div class="file-item">
+                            <div class="file-info">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <div style="font-size: 1.5em;">\${icon}</div>
+                                    <div>
+                                        <div style="font-weight: bold; font-size: 1.1em;">\${file.name}</div>
+                                        <div style="color: #aaa; font-size: 0.9em; margin-top: 5px;">
+                                            \${size} • Modified: \${file.modified}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="file-actions">
+                                \${!file.isDir ? \`
+                                    <button class="btn btn-primary" onclick="viewFile('\${file.name}')">
+                                        👁️ View
+                                    </button>
+                                    <button class="btn btn-success" onclick="downloadFile('\${file.name}')">
+                                        📥 Download
+                                    </button>
+                                \` : \`
+                                    <button class="btn btn-info" onclick="enterDirectory('\${file.name}')" style="background: #3498db;">
+                                        📂 Open
+                                    </button>
+                                \`}
+                                <button class="btn btn-danger" onclick="deleteFile('\${file.name}')">
+                                    🗑️ Delete
+                                </button>
+                            </div>
+                        </div>
+                    \`;
+                });
+                
+                document.getElementById('filesList').innerHTML = html;
+                updateStats();
+            } catch (error) {
+                document.getElementById('filesList').innerHTML = \`
+                    <div style="background: rgba(232, 69, 69, 0.1); padding: 20px; border-radius: 8px; color: #e84545;">
+                        ❌ Failed to load files: \${error.message}
+                    </div>
+                \`;
+            }
+        }
+        
+        async function viewFile(filename) {
+            try {
+                document.getElementById('viewFileName').textContent = filename;
+                document.getElementById('viewFileContent').innerHTML = \`
+                    <div style="text-align: center; padding: 20px; color: #aaa;">
+                        <div class="loader" style="margin: 0 auto 20px;"></div>
+                        <p>Loading file content...</p>
+                    </div>
+                \`;
+                
+                showModal('viewModal');
+                
+                const data = await apiCall(\`/view?file=\${encodeURIComponent(filename)}\`);
+                document.getElementById('viewFileContent').textContent = data.content;
+            } catch (error) {
+                document.getElementById('viewFileContent').textContent = \`Error: \${error.message}\`;
+            }
+        }
+        
+        async function downloadFile(filename) {
+            window.open(\`\${API_BASE}/download?file=\${encodeURIComponent(filename)}\`, '_blank');
+            showAlert(\`Downloading: \${filename}\`, 'success');
+        }
+        
+        async function deleteFile(filename) {
+            if (!confirm(\`Delete "\${filename}"?\`)) return;
+            
+            try {
+                await apiCall(\`/delete?file=\${encodeURIComponent(filename)}\`);
+                showAlert(\`Deleted: \${filename}\`, 'success');
+                loadFiles();
+            } catch (error) {
+                showAlert(\`Delete failed: \${error.message}\`, 'danger');
+            }
+        }
+        
+        async function createFolder() {
+            const folderName = document.getElementById('newFolderName').value.trim();
+            if (!folderName) {
+                showAlert('Please enter folder name', 'danger');
+                return;
+            }
+            
+            try {
+                // Create folder using mkdir command
+                await apiCall('/exec', {
+                    method: 'POST',
+                    body: JSON.stringify({ command: \`mkdir "\${folderName}"\` })
+                });
+                
+                showAlert(\`Created folder: \${folderName}\`, 'success');
+                closeModal('mkdirModal');
+                document.getElementById('newFolderName').value = '';
+                loadFiles();
+            } catch (error) {
+                showAlert(\`Failed: \${error.message}\`, 'danger');
+            }
+        }
+        
+        async function enterDirectory(dirname) {
+            try {
+                await apiCall('/exec', {
+                    method: 'POST',
+                    body: JSON.stringify({ command: \`cd "\${dirname}" && pwd\` })
+                });
+                
+                // Reload files to show new directory
+                await loadFiles();
+                showAlert(\`Entered: \${dirname}\`, 'success');
+            } catch (error) {
+                showAlert(\`Cannot enter: \${error.message}\`, 'danger');
+            }
+        }
+        
+        async function goUp() {
+            try {
+                await apiCall('/exec', {
+                    method: 'POST',
+                    body: JSON.stringify({ command: 'cd .. && pwd' })
+                });
+                loadFiles();
+                showAlert('Moved up one directory', 'success');
+            } catch (error) {
+                showAlert(\`Cannot go up: \${error.message}\`, 'danger');
+            }
+        }
+        
+        // Terminal
+        async function executeCommand() {
+            const input = document.getElementById('commandInput');
+            const command = input.value.trim();
+            
+            if (!command) return;
+            
+            // Add to history
+            currentState.terminalHistory.push(command);
+            currentState.historyIndex = currentState.terminalHistory.length;
+            
+            // Display command
+            const output = document.getElementById('terminalOutput');
+            output.innerHTML += \`<div style="color: #00adb5;">$ \${command}</div>\`;
+            
+            // Clear input
+            input.value = '';
+            
+            try {
+                const result = await apiCall('/exec', {
+                    method: 'POST',
+                    body: JSON.stringify({ command })
+                });
+                
+                output.innerHTML += \`<div>\${result}</div>\`;
+                
+                // If command changes directory, reload files
+                if (command.startsWith('cd ')) {
+                    setTimeout(loadFiles, 100);
+                }
+            } catch (error) {
+                output.innerHTML += \`<div style="color: #e84545;">Error: \${error.message}</div>\`;
+            }
+            
+            // Scroll to bottom
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        function clearTerminal() {
+            document.getElementById('terminalOutput').innerHTML = \`
+                <div style="color: #00adb5;">$ Terminal cleared</div>
+                <div style="color: #00adb5;">$ Type 'help' for available commands</div>
+            \`;
+        }
+        
+        // Upload
+        function handleDragOver(e) {
+            e.preventDefault();
+            document.getElementById('dragArea').classList.add('dragover');
+        }
+        
+        function handleDragLeave(e) {
+            e.preventDefault();
+            document.getElementById('dragArea').classList.remove('dragover');
+        }
+        
+        function handleDrop(e) {
+            e.preventDefault();
+            document.getElementById('dragArea').classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        }
+        
+        function handleFileSelect(e) {
+            handleFiles(e.target.files);
+        }
+        
+        async function handleFiles(files) {
+            if (files.length === 0) return;
+            
+            const progress = document.getElementById('uploadProgress');
+            const progressBar = document.getElementById('progressBar');
+            const status = document.getElementById('uploadStatus');
+            
+            progress.style.display = 'block';
+            progressBar.style.width = '0%';
+            status.innerHTML = \`Uploading \${files.length} file(s)...\`;
+            
+            const formData = new FormData();
+            for (let file of files) {
+                formData.append('files', file);
+            }
+            
+            try {
+                const response = await fetch(API_BASE + '/upload', {
+                    method: 'POST',
+                    headers: { 'Authorization': 'Basic ' + btoa('admin:admin123') },
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    progressBar.style.width = '100%';
+                    const result = await response.text();
+                    status.innerHTML = \`<span style="color: #16c79a;">✅ \${result}</span>\`;
+                    showAlert(result, 'success');
+                    loadFiles();
+                } else {
+                    throw new Error('Upload failed');
+                }
+            } catch (error) {
+                status.innerHTML = \`<span style="color: #e84545;">❌ \${error.message}</span>\`;
+                showAlert(\`Upload failed: \${error.message}\`, 'danger');
+            }
+        }
+        
+        // System Info
+        async function loadSystemInfo() {
+            try {
+                const info = await apiCall('/sysinfo');
+                
+                let html = '';
+                const formatInfo = {
+                    'hostname': 'Hostname',
+                    'platform': 'Platform',
+                    'arch': 'Architecture',
+                    'cpus': 'CPU Cores',
+                    'totalMemory': 'Total Memory',
+                    'freeMemory': 'Free Memory',
+                    'uptime': 'Uptime',
+                    'user': 'User',
+                    'cwd': 'Current Directory',
+                    'nodeVersion': 'Node.js Version'
+                };
+                
+                for (const [key, label] of Object.entries(formatInfo)) {
+                    let value = info[key];
+                    
+                    if (key.includes('Memory')) {
+                        value = formatBytes(value);
+                    } else if (key === 'uptime') {
+                        value = (value / 3600).toFixed(2) + ' hours';
+                    }
+                    
+                    html += \`
+                        <tr>
+                            <td><strong>\${label}</strong></td>
+                            <td>\${value}</td>
+                        </tr>
+                    \`;
+                }
+                
+                document.getElementById('systemTable').innerHTML = html;
+            } catch (error) {
+                document.getElementById('systemTable').innerHTML = \`
+                    <tr>
+                        <td colspan="2" style="color: #e84545;">
+                            ❌ Failed to load: \${error.message}
+                        </td>
+                    </tr>
+                \`;
+            }
+        }
+        
+        // UI Controls
+        function showTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active from all buttons
+            document.querySelectorAll('.tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+            
+            // Load data for tab
+            if (tabId === 'files') loadFiles();
+            if (tabId === 'system') loadSystemInfo();
+        }
+        
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        function updateStats() {
+            const files = currentState.files;
+            const dirs = files.filter(f => f.isDir).length;
+            const fileCount = files.filter(f => !f.isDir).length;
+            const totalSize = files.reduce((sum, f) => sum + f.size, 0);
+            
+            document.getElementById('statDirs').textContent = dirs;
+            document.getElementById('statFiles').textContent = fileCount;
+            document.getElementById('statSize').textContent = formatBytes(totalSize);
+            
+            // Update current path if we have files
+            if (files.length > 0) {
+                document.getElementById('currentPath').textContent = files[0].path || process.cwd();
+            }
+        }
+        
+        function copyServerCode() {
+            const serverCode = document.querySelector('script').textContent.match(/const serverCode = \`([\s\S]*?)\`/)[1];
+            navigator.clipboard.writeText(serverCode)
+                .then(() => showAlert('Server code copied to clipboard!', 'success'))
+                .catch(() => showAlert('Failed to copy', 'danger'));
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFiles();
+            loadSystemInfo();
+            
+            // Auto-refresh files every 30 seconds
+            setInterval(loadFiles, 30000);
+            
+            // Focus command input
+            document.getElementById('commandInput').focus();
+        });
+        
+        // Make functions available globally
+        window.loadFiles = loadFiles;
+        window.showTab = showTab;
+        window.showModal = showModal;
+        window.closeModal = closeModal;
+    </script>
+</body>
+</html>
